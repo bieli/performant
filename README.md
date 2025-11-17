@@ -11,6 +11,6 @@ to see more informations from runtime of `<program_binary>` (optional 10 runs `[
 - IO utilization
 - CPUs loads
 
-This is not perfect performance test, but with this I will be happy to see, how program1 is more **performant** the similar program2 and this is ok for now.
+This is not perfect performance test, but with this I will be happy to see, how program1 is more **performant** to the similar program2 and this is ok for now.
 
 #### TBD
