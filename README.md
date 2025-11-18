@@ -13,4 +13,25 @@ to see more informations from runtime of `<program_binary>` (optional 10 runs `[
 
 This is not perfect performance test, but with this I will be happy to see, how program1 is more **performant** to the similar program2 and this is ok for now.
 
-#### TBD
+# How to run?
+
+## Dev. run example
+
+```bash
+$ cargo run --release -- -r 3 ls
+
+>>> Run 1/3
+Duration: 74ns
+
+>>> Run 2/3
+Duration: 22ns
+
+>>> Run 3/3
+Duration: 16ns
+
+=== Run Time Summary:
+  Runs: 3
+  Min:  0.000000016 sec
+  Max:  0.000000074 sec
+  Avg:  0.000000037 sec
+```
