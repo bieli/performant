@@ -7,4 +7,3 @@ edition = "2021"
 ascii_table_rs = "1.0.2"
 chrono = "0.4.26"
 clap = { version = "4.5.52", features = ["derive"] }
-libc = "0.2.162"

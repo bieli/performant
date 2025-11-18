@@ -1,10 +1,10 @@
-use libc::{getrusage, rusage, RUSAGE_CHILDREN};
 use std::fs;
 use std::process::Command;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
+use ascii_table_rs::{AsciiTable, CellValue};
 
 #[derive(Debug)]
 pub struct MemoryStats {
@@ -43,14 +43,7 @@ pub fn monitor_memory(
     }
 }
 
-pub fn print_memory_table(samples: &[(f64, u64)], stats: &MemoryStats) {
-    println!("\n┌────────────┬───────────────┐");
-    println!("│ Time (s)   │ Memory (KB)   │");
-    println!("├────────────┼───────────────┤");
-    for (t, mem) in samples {
-        println!("│ {:>10.2} │ {:>13} │", t, mem);
-    }
-    println!("└────────────┴───────────────┘");
+pub fn print_memory_summary(samples: &[(f64, u64)], stats: &MemoryStats) {
     println!("\n=== Memory Summary:");
     println!("  Samples:   {}", stats.samples);
     println!("  Min:   {} KB", stats.min);
@@ -61,10 +54,22 @@ pub fn print_memory_table(samples: &[(f64, u64)], stats: &MemoryStats) {
     );
 }
 
-pub fn run_and_measure(
-    cmd: &str,
-    args: &[&str],
-) -> (Duration, rusage, Vec<(f64, u64)>, MemoryStats) {
+pub fn print_with_ascii_table_rs(samples: &[(f64, u64)], stats: &MemoryStats) {
+    let mut table = AsciiTable::new("Memory Samples Summary");
+    table.set_headers(vec!["Time (s)", "Memory (KB)"]);
+    table.set_decimal_places(2);
+
+    for (t, mem) in samples {
+        table.add_row(vec![
+            CellValue::Float(*t),
+            CellValue::Int(*mem as i64),
+        ]);
+    }
+
+    table.render();
+}
+
+pub fn run_and_measure(cmd: &str, args: &[&str]) -> (Duration, Vec<(f64, u64)>, MemoryStats) {
     let start = Instant::now();
     let mut child = Command::new(cmd)
         .args(args)
@@ -90,25 +95,8 @@ pub fn run_and_measure(
     let end = Instant::now();
     monitor_thread.join().unwrap();
 
-    let usage = {
-        let mut usage = rusage {
-            ru_utime: libc::timeval {
-                tv_sec: 0,
-                tv_usec: 0,
-            },
-            ru_stime: libc::timeval {
-                tv_sec: 0,
-                tv_usec: 0,
-            },
-            ru_maxrss: 0,
-            ..unsafe { std::mem::zeroed() }
-        };
-        unsafe { getrusage(RUSAGE_CHILDREN, &mut usage) };
-        usage
-    };
-
     let final_stats: MemoryStats = Arc::try_unwrap(stats).unwrap().into_inner().unwrap();
     let final_samples: Vec<_> = Arc::try_unwrap(samples).unwrap().into_inner().unwrap();
 
-    (end - start, usage, final_samples, final_stats)
+    (end - start, final_samples, final_stats)
 }
