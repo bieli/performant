@@ -1,7 +1,7 @@
 use clap::Parser;
 use std::time::Duration;
-use std::time::Instant;
 
+use performant::measure::run_and_measure;
 use performant::stats::{compute_duration_stats, print_duration_stats};
 
 /// performant: A CLI tool for profiling POSIX programs
@@ -16,13 +16,6 @@ struct Args {
 
     #[arg(trailing_var_arg = true)]
     args: Vec<String>,
-}
-
-fn run_and_measure(_cmd: &str, _args: &[&str]) -> Duration {
-    let start = Instant::now();
-    let end = Instant::now();
-    //TODO: implement measuring resource usage, add usage to return value
-    end - start
 }
 
 fn summarize_durations(durations: &[Duration]) {
