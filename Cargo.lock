@@ -262,6 +262,7 @@ dependencies = [
  "ascii_table_rs",
  "chrono",
  "clap",
+ "libc",
 ]
 
 [[package]]
