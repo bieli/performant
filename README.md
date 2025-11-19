@@ -193,3 +193,7 @@ connect failed: No such file or directory
 - [ ] warmup time as optional argument (means, we waiting N-seconds and collecting data from this point in time)
 - [ ] add more unit tests
 - [ ] add integration test with running on multiple Open Source packages/programs
+- [ ] add Caches profiling histogram
+- [ ] CPU utilization profiling histogram
+- [ ] IO utilization
+- [ ] CPUs loads
