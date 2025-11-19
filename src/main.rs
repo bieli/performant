@@ -1,7 +1,7 @@
 use clap::Parser;
 use std::time::Duration;
 
-use performant::measure::{print_with_ascii_table_rs, print_memory_summary, run_and_measure, plot_memory_usage1};
+use performant::measure::{print_with_ascii_table_rs, print_memory_summary, run_and_measure, plot_memory_usage1, compress_memory_samples, print_compressed_memory_summary};
 use performant::stats::{compute_duration_stats, print_duration_stats};
 
 #[derive(Parser, Debug)]
@@ -35,7 +35,8 @@ fn main() {
             &args.program,
             &args.args.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
         );
-        print_with_ascii_table_rs(&final_samples, &final_stats);
+        let compressed_memory_samples = compress_memory_samples(&final_samples);
+        print_compressed_memory_summary(&compressed_memory_samples);
         print_memory_summary(&final_samples, &final_stats);
         plot_memory_usage1(&final_samples);
         durations.push(duration);

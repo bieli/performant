@@ -146,6 +146,63 @@ pub fn print_memory_histogram(samples: &[(f64, u64)], bin_size: u64) {
     }
 }
 
+pub fn compress_memory_samples(samples: &[(f64, u64)]) -> Vec<(String, u64)> {
+    if samples.is_empty() {
+        return vec![];
+    }
+
+    let mut compressed = Vec::new();
+    let mut start_time = samples[0].0;
+    let mut end_time = samples[0].0;
+    let mut current_mem = samples[0].1;
+
+    for window in samples.windows(2) {
+        let (t1, m1) = window[0];
+        let (t2, m2) = window[1];
+
+        if m2 == current_mem {
+            end_time = t2;
+        } else {
+            let label = if start_time == end_time {
+                format!("{:.2}", start_time)
+            } else {
+                format!("{:.2}..{:.2}", start_time, end_time)
+            };
+            compressed.push((label, current_mem));
+
+            start_time = t2;
+            end_time = t2;
+            current_mem = m2;
+        }
+    }
+
+    let label = if start_time == end_time {
+        format!("{:.2}", start_time)
+    } else {
+        format!("{:.2}..{:.2}", start_time, end_time)
+    };
+    compressed.push((label, current_mem));
+
+    compressed
+}
+
+
+pub fn print_compressed_memory_summary(samples: &Vec<(String, u64)>) {
+    let mut table = AsciiTable::new("Memory Samples Summary");
+    table.set_headers(vec!["Time / time ranges (s)", "Memory (KB)"]);
+    table.set_decimal_places(2);
+
+    for (t, mem) in samples {
+        table.add_row(vec![
+            CellValue::Str((*t).to_string()),
+            CellValue::Int(*mem as i64),
+        ]);
+    }
+
+    table.render();
+}
+
+
 pub fn run_and_measure(cmd: &str, args: &[&str]) -> (Duration, Vec<(f64, u64)>, MemoryStats) {
     let start = Instant::now();
     let mut child = Command::new(cmd)
