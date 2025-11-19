@@ -2,9 +2,9 @@
 Command line tool for fetch OS performance metrics from running programs in POSIX terminal
 
 # Motivation
-Sometimes, I need to know, what is better performance solution in on or another programming language, so I want to run like that:
-`performant [-r 10] <program_binary> [args]`
-to see more informations from runtime of `<program_binary>` (optional 10 runs `[-r 10]` one by one) like:
+Sometimes, I need to know, what is better performance solution in between outputs from a few programming language, so I want to run this tool like that:
+`$ performant [-r 10] <program_binary_under_tests> [args]`
+to see more informations from runtime of `<program_binary_under_tests>` (optional 10 runs `[-r 10]` one by one) like:
 - RAM memory profiling histogram
 - Caches profiling histogram
 - CPU utilization profiling histogram
