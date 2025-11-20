@@ -1,7 +1,10 @@
 use clap::Parser;
 use std::time::Duration;
 
-use performant::measure::{print_with_ascii_table_rs, print_memory_summary, run_and_measure, plot_memory_usage1, compress_memory_samples, print_compressed_memory_summary};
+use performant::measure::{
+    compress_memory_samples, plot_memory_usage1, print_compressed_memory_summary,
+    print_memory_summary, print_with_ascii_table_rs, run_and_measure,
+};
 use performant::stats::{compute_duration_stats, print_duration_stats};
 
 #[derive(Parser, Debug)]
