@@ -1,12 +1,12 @@
+use ascii_table_rs::{AsciiTable, CellValue};
 use std::fs;
 use std::process::Command;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
-use ascii_table_rs::{AsciiTable, CellValue};
-use textplots::{Chart, Plot, Shape};
 use textplots::utils::histogram;
+use textplots::{Chart, Plot, Shape};
 
 #[derive(Debug)]
 pub struct MemoryStats {
