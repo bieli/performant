@@ -189,7 +189,6 @@ pub fn compress_memory_samples(samples: &[(f64, u64)]) -> Vec<(String, u64)> {
     compressed
 }
 
-
 pub fn print_compressed_memory_summary(samples: &Vec<(String, u64)>) {
     let mut table = AsciiTable::new("Memory Samples Summary");
     table.set_headers(vec!["Time / time ranges (s)", "Memory (KB)"]);
