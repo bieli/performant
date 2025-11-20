@@ -1,4 +1,8 @@
 # performant
+
+![CI status](https://github.com/bieli/performant/actions/workflows/test.yaml/badge.svg)
+![github_tag](https://img.shields.io/github/v/tag/bieli/performant)
+
 Command line tool for fetch OS performance metrics from running programs in POSIX terminal
 
 # Motivation
