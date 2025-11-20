@@ -62,10 +62,7 @@ pub fn print_with_ascii_table_rs(samples: &[(f64, u64)], stats: &MemoryStats) {
     table.set_decimal_places(2);
 
     for (t, mem) in samples {
-        table.add_row(vec![
-            CellValue::Float(*t),
-            CellValue::Int(*mem as i64),
-        ]);
+        table.add_row(vec![CellValue::Float(*t), CellValue::Int(*mem as i64)]);
     }
 
     table.render();
@@ -100,7 +97,10 @@ pub fn plot_memory_usage2(samples: &[(f64, u64)]) {
         .collect();
 
     let min_y = points.iter().map(|(_, y)| *y).fold(f32::INFINITY, f32::min);
-    let max_y = points.iter().map(|(_, y)| *y).fold(f32::NEG_INFINITY, f32::max);
+    let max_y = points
+        .iter()
+        .map(|(_, y)| *y)
+        .fold(f32::NEG_INFINITY, f32::max);
 
     println!("\n=== Memory Usage Over Time (KB)");
     println!("Y-axis range: {:.0} KB → {:.0} KB", min_y, max_y);
@@ -109,9 +109,12 @@ pub fn plot_memory_usage2(samples: &[(f64, u64)]) {
         .lineplot(&Shape::Lines(&points))
         .display();
 
-    println!("X-axis: {:.1} sec → {:.1} sec", points[0].0, points.last().unwrap().0);
+    println!(
+        "X-axis: {:.1} sec → {:.1} sec",
+        points[0].0,
+        points.last().unwrap().0
+    );
 }
-
 
 pub fn print_memory_histogram(samples: &[(f64, u64)], bin_size: u64) {
     if samples.is_empty() {
@@ -201,7 +204,6 @@ pub fn print_compressed_memory_summary(samples: &Vec<(String, u64)>) {
 
     table.render();
 }
-
 
 pub fn run_and_measure(cmd: &str, args: &[&str]) -> (Duration, Vec<(f64, u64)>, MemoryStats) {
     let start = Instant::now();
